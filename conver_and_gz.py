@@ -11,10 +11,13 @@ We will build another that will match.
 Eventually it will built Sub/scan/condition with one file per condition and data files (match the BIDS demands)
 """
 from nipype.interfaces.dcm2nii import Dcm2niix
+
 import os
 
-mainFolder = os.path.abspath('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/') # should be the main folder where all subjects can be found
-condList = ['diff','localizer','MPRAGE','INF','Sound','Memory', 'rest'] # list of conditions (names of files)
+#mainFolder = os.path.abspath('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/') # should be the main folder where all subjects can be found
+mainFolder = os.path.abspath('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/')
+condList = ['diff','localizer','MPRAGE','bold','t1'] # list of conditions (names of files) 
+# leaving 'rest' to go to bold folder. 
 
 def convert (source_dir, output_dir, subName): # this is a function that takes input directory, output directory and subject name and then converts everything accordingly
     converter = Dcm2niix()
@@ -22,18 +25,21 @@ def convert (source_dir, output_dir, subName): # this is a function that takes i
     converter.inputs.compression = 7 # how much compression
     converter.inputs.output_dir = output_dir
     converter.inputs.out_filename = subName + '_%d , %a, %c'
+    ## adding try exepct
     converter.run()
     
+            
+    
 
-#subName = ['kpe1390'] # should be taken from a list or a file. 
-subNameFile = open('/home/or/Documents/dicom_niix/subNameFile2.txt') # file with subject names
+#subName = ['kpe1390'] # should be taken from a list or a file.     
+subNameFile = open('/home/or/Documents/dicom_niix/R_A_ptsd_subList.txt') # file with subject names
 lines = subNameFile.read().split()
-subName = ['kpe' + s for s in lines]
+subName = ['subj' + s for s in lines]
 
-os.makedirs('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/PTSD_KPE/Converted', exist_ok=True) # creating specific folder to put all data in
+os.makedirs('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/Converted', exist_ok=True) # creating specific folder to put all data in
 
 # change to specific folder
-os.chdir('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/PTSD_KPE/Converted')
+os.chdir('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/Converted')
 print(subName)
 for name in subName:
     os.makedirs(name, exist_ok = True) # create folder for user
@@ -53,7 +59,14 @@ for name in subName:
                 #os.makedirs(os.path.join(subName, subDir,rawPath), exist_ok=True)
                 newPath = os.path.join(name, subDir) #,rawPath)
                 
-                convert(fullPath, newPath, name)
+                # before converting - check if there are any files:
+                if not os.listdir(fullPath):
+                    print('Folder is empty')
+                else:
+                    try:
+                        convert(fullPath, newPath, name)
+                    except:
+                        print ("There was an error in dcm2niix" + ' Source folder:' + fullPath +" output folder:" + newPath+ " subject number:" + name)
         fileList = [] # create empty list for now
         for root, dirs, files in os.walk(newPath):
             
