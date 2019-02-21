@@ -1,0 +1,1 @@
+docker run --rm -it -v /media/Data/r_a_Test/:/data:ro -v /media/Data/output2:/out -v /home/or/Downloads/freesurferLicense/:/freesurferLicense -v /media/Data/docker/:/work poldracklab/fmriprep:1.2.6 /data /out participant --nthreads 8 -w /work --fs-license-file /freesurferLicense/license.txt --fs-no-reconall --low-mem --participant_label 1273

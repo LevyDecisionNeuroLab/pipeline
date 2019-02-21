@@ -15,8 +15,8 @@ from nipype.interfaces.dcm2nii import Dcm2niix
 import os
 
 #mainFolder = os.path.abspath('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/') # should be the main folder where all subjects can be found
-mainFolder = os.path.abspath('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/')
-condList = ['diff','localizer','MPRAGE','bold','t1'] # list of conditions (names of files) 
+mainFolder = os.path.abspath('/home/or/Documents/')
+condList = [] # list of conditions (names of files) 
 # leaving 'rest' to go to bold folder. 
 
 def convert (source_dir, output_dir, subName): # this is a function that takes input directory, output directory and subject name and then converts everything accordingly
@@ -31,10 +31,10 @@ def convert (source_dir, output_dir, subName): # this is a function that takes i
             
     
 
-#subName = ['kpe1390'] # should be taken from a list or a file.     
-subNameFile = open('/home/or/Documents/dicom_niix/R_A_ptsd_subList.txt') # file with subject names
-lines = subNameFile.read().split()
-subName = ['subj' + s for s in lines]
+subName = ['NF1319'] # should be taken from a list or a file.     
+#subNameFile = open('/home/or/Documents/dicom_niix/R_A_ptsd_subList.txt') # file with subject names
+#lines = subNameFile.read().split()
+#subName = ['subj' + s for s in lines]
 
 os.makedirs('/run/user/1000/gvfs/smb-share:server=172.21.64.199,share=levy_lab/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/Converted', exist_ok=True) # creating specific folder to put all data in
 
