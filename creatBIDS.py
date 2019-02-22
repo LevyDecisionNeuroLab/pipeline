@@ -13,20 +13,24 @@ from nipype.interfaces.dcm2nii import Dcm2niix
 import shutil
 # folder names:
 folder_name = ['anat','func','dwi','other']
-subName = '1286'
-session = 'ses-2'
-source_dir = '/media/Data/neurofeedback/raw_scan_data/NF1286/nf1286_scan2_pb8143'
-output_dir = '/media/Data/neurofeedback/NIFTI/sub-1286'
+subName = '1445'
+session = 'ses-1'
+source_dir = '/media/Drobo/Levy_Lab/Projects/PTSD_Reversal_2018/scan_data/raw/megha/rv1445/tb8032_harpaz-rotem'
+output_dir = '/media/Data/reversal_NIFTI_BIDS/'
 #%% Convert functions Converts DICOM to NIFTI.GZ
 def convert (source_dir, output_dir, subName, session): # this is a function that takes input directory, output directory and subject name and then converts everything accordingly
     try:
-        os.makedirs(os.path.join(output_dir, session))
+        os.makedirs(os.path.join(output_dir, subName, session))
     except:
-        print ("folder already there")    
+        print ("folder already there")
+#    try:
+#       os.makedirs(os.path.join(output_dir, subName, ))
+#    except:
+#       print("Folder Exist")    
     converter = Dcm2niix()
     converter.inputs.source_dir = source_dir
     converter.inputs.compression = 7
-    converter.inputs.output_dir = os.path.join( output_dir + '/' + session)
+    converter.inputs.output_dir = os.path.join( output_dir, subName, session)
     converter.inputs.out_filename = subName + '_%d , %a, %c'
     converter.run()
 
@@ -46,7 +50,7 @@ def checkTask(filename):
 
 #%% create folder structure 
 # create folder structure
-fullPath = os.path.join(output_dir, session)
+fullPath = os.path.join(output_dir, subName, session)
 os.makedirs(fullPath + '/dwi')
 os.makedirs(fullPath + '/anat')    
 os.makedirs(fullPath + '/func')
