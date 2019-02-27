@@ -13,10 +13,12 @@ from nipype.interfaces.dcm2nii import Dcm2niix
 import shutil
 # folder names:
 folder_name = ['anat','func','dwi','other']
-subName = '1445'
-session = 'ses-1'
-source_dir = '/media/Drobo/Levy_Lab/Projects/PTSD_Reversal_2018/scan_data/raw/megha/rv1445/tb8032_harpaz-rotem'
-output_dir = '/media/Data/reversal_NIFTI_BIDS/'
+subNumber = '1263'
+session = 'ses-4'
+source_dir = '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1223/kpe1223_scan4_pb2126_harpaz-rotem'
+output_dir = '/media/Data/kpe_forFmriPrep/'
+
+subName = 'sub-' + subNumber
 #%% Convert functions Converts DICOM to NIFTI.GZ
 def convert (source_dir, output_dir, subName, session): # this is a function that takes input directory, output directory and subject name and then converts everything accordingly
     try:
@@ -44,7 +46,7 @@ def checkGz (extension):
 
 def checkTask(filename):
     sep = 'bold'
-    rest = n.split(sep)[1] # takes the last part of filename
+    rest = filename.split(sep)[1] # takes the last part of filename
     taskName = rest.split('.',1)[0]
     return taskName.replace("_","")
 
@@ -88,7 +90,66 @@ for n in a[2]:
         shutil.move((fullPath + '/' + n), (fullPath + '/misc/' + n))
        # os.rename(os.path.join(fullPath, 'misc', n), (fullPath +'/misc/' +'sub-'+subName+'_ses-' +sessionNum + '_MISC' + checkGz(b)))
 
+#%%
+def organizeFiles(outpu_dir, subName, session):
+    fullPath = os.path.join(output_dir, subName, session)
+    os.makedirs(fullPath + '/dwi')
+    os.makedirs(fullPath + '/anat')    
+    os.makedirs(fullPath + '/func')
+    os.makedirs(fullPath + '/misc')    
+    
+    a = next(os.walk(fullPath)) # list the subfolders under subject name
+
+    # run through the possibilities and match directory with scan number (day)
+    for n in a[2]:
+        print (n)
+        b = os.path.splitext(n)
+        
+        if n.find('diff')!=-1:
+            print ('This file is DWI')
+            shutil.move((fullPath +'/' + n), fullPath + '/dwi/' + n)
+            os.rename((os.path.join(fullPath, 'dwi' ,n)), (fullPath + '/' + 'dwi' +'/' +'sub-' + subName + '_' + session +'_dwi' + checkGz(b)))
+            
+            
+        elif n.find('MPRAGE')!=-1:
+            print (n + ' Is Anat')
+            shutil.move((fullPath + '/' + n), (fullPath + '/anat/' + n))
+            os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + 'sub-'+subName+ '_' + session + '_T1w' + checkGz(b)))
+        elif n.find('bold')!=-1:
+            print(n  + ' Is functional')
+            taskName = checkTask(n)
+            shutil.move((fullPath + '/' + n), (fullPath + '/func/' + n))
+            os.rename(os.path.join(fullPath, 'func', n), (fullPath  + '/func/' +'sub-'+subName+'_' +session + '_task-' + taskName + '_bold' + checkGz(b)))
+        else:
+            print (n + 'Is MISC')
+            shutil.move((fullPath + '/' + n), (fullPath + '/misc/' + n))
+           # os.rename(os.path.join(fullPath, 'misc', n), (fullPath +'/misc/' +'sub-'+subName+'_ses-' +sessionNum + '_MISC' + checkGz(b)))
 
 
 
-
+#%%
+sessionDict = {
+        'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1293/kpe1293_scan1_pb1594_harpaz-rotem',
+'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1293/kpe1293_scan2_pb1647_harpaz-rotem',
+'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1293/kpe1293_scan3_pb1807_harpaz-rotem',
+'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1293/kpe1293_scan4_pb2250_harpaz-rotem'
+        }
+subNumber = '1293'
+def fullBids(subNumber, sessionDict):
+    output_dir = '/media/Data/kpe_forFmriPrep/'
+    subName = 'sub-' + subNumber
+    folder_name = ['anat','func','dwi','other']
+    
+    for i in sessionDict:
+        session = i
+        source_dir = sessionDict[i]
+        print (session, source_dir)
+        fullPath = os.path.join(output_dir, subName, session)
+        print(fullPath)
+        convert(source_dir,  output_dir, subName, session)
+        organizeFiles(output_dir, subName, session)        
+        
+    
+    #print (v)
+#%%
+fullBids(subNumber, sessionDict)
