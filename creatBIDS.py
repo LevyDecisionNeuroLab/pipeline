@@ -109,7 +109,7 @@ def organizeFiles(outpu_dir, subName, session):
         if n.find('diff')!=-1:
             print ('This file is DWI')
             shutil.move((fullPath +'/' + n), fullPath + '/dwi/' + n)
-            os.rename((os.path.join(fullPath, 'dwi' ,n)), (fullPath + '/' + 'dwi' +'/' +'sub-' + subName + '_' + session +'_dwi' + checkGz(b)))
+            os.rename((os.path.join(fullPath, 'dwi' ,n)), (fullPath + '/' + 'dwi' +'/' + subName + '_' + session +'_dwi' + checkGz(b)))
             
             
         elif n.find('MPRAGE')!=-1:
