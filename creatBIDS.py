@@ -15,6 +15,7 @@ import shutil
 folder_name = ['anat','func','dwi','other']
 subNumber = '1263'
 session = 'ses-4'
+
 source_dir = '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1223/kpe1223_scan4_pb2126_harpaz-rotem'
 output_dir = '/media/Data/kpe_forFmriPrep/'
 
@@ -62,33 +63,33 @@ os.makedirs(fullPath + '/misc')
 #%% Run convertion function
 convert(source_dir, output_dir, subName, session) # run conversion
 
-#%% run in the folder (session folder) and build file names
-a = next(os.walk(fullPath)) # list the subfolders under subject name
-
-# run through the possibilities and match directory with scan number (day)
-for n in a[2]:
-    print (n)
-    b = os.path.splitext(n)
-    
-    if n.find('diff')!=-1:
-        print ('This file is DWI')
-        shutil.move((fullPath +'/' + n), fullPath + '/dwi/' + n)
-        os.rename((os.path.join(fullPath, 'dwi' ,n)), (fullPath + '/' + 'dwi' +'/' +'sub-' + subName + '_' + session +'_dwi' + checkGz(b)))
-        
-        
-    elif n.find('MPRAGE')!=-1:
-        print (n + ' Is Anat')
-        shutil.move((fullPath + '/' + n), (fullPath + '/anat/' + n))
-        os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + 'sub-'+subName+ '_' + session + '_T1w' + checkGz(b)))
-    elif n.find('bold')!=-1:
-        print(n  + ' Is functional')
-        taskName = checkTask(n)
-        shutil.move((fullPath + '/' + n), (fullPath + '/func/' + n))
-        os.rename(os.path.join(fullPath, 'func', n), (fullPath  + '/func/' +'sub-'+subName+'_' +session + '_task-' + taskName + '_bold' + checkGz(b)))
-    else:
-        print (n + 'Is MISC')
-        shutil.move((fullPath + '/' + n), (fullPath + '/misc/' + n))
-       # os.rename(os.path.join(fullPath, 'misc', n), (fullPath +'/misc/' +'sub-'+subName+'_ses-' +sessionNum + '_MISC' + checkGz(b)))
+##%% run in the folder (session folder) and build file names
+#a = next(os.walk(fullPath)) # list the subfolders under subject name
+#
+## run through the possibilities and match directory with scan number (day)
+#for n in a[2]:
+#    print (n)
+#    b = os.path.splitext(n)
+#    
+#    if n.find('diff')!=-1:
+#        print ('This file is DWI')
+#        shutil.move((fullPath +'/' + n), fullPath + '/dwi/' + n)
+#        os.rename((os.path.join(fullPath, 'dwi' ,n)), (fullPath + '/' + 'dwi' +'/' +'sub-' + subName + '_' + session +'_dwi' + checkGz(b)))
+#        
+#        
+#    elif n.find('MPRAGE')!=-1:
+#        print (n + ' Is Anat')
+#        shutil.move((fullPath + '/' + n), (fullPath + '/anat/' + n))
+#        os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + 'sub-'+subName+ '_' + session + '_T1w' + checkGz(b)))
+#    elif n.find('bold')!=-1:
+#        print(n  + ' Is functional')
+#        taskName = checkTask(n)
+#        shutil.move((fullPath + '/' + n), (fullPath + '/func/' + n))
+#        os.rename(os.path.join(fullPath, 'func', n), (fullPath  + '/func/' +'sub-'+subName+'_' +session + '_task-' + taskName + '_bold' + checkGz(b)))
+#    else:
+#        print (n + 'Is MISC')
+#        shutil.move((fullPath + '/' + n), (fullPath + '/misc/' + n))
+#       # os.rename(os.path.join(fullPath, 'misc', n), (fullPath +'/misc/' +'sub-'+subName+'_ses-' +sessionNum + '_MISC' + checkGz(b)))
 
 #%%
 def organizeFiles(outpu_dir, subName, session):
@@ -114,12 +115,12 @@ def organizeFiles(outpu_dir, subName, session):
         elif n.find('MPRAGE')!=-1:
             print (n + ' Is Anat')
             shutil.move((fullPath + '/' + n), (fullPath + '/anat/' + n))
-            os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + 'sub-'+subName+ '_' + session + '_T1w' + checkGz(b)))
+            os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + subName+ '_' + session + '_T1w' + checkGz(b)))
         elif n.find('bold')!=-1:
             print(n  + ' Is functional')
             taskName = checkTask(n)
             shutil.move((fullPath + '/' + n), (fullPath + '/func/' + n))
-            os.rename(os.path.join(fullPath, 'func', n), (fullPath  + '/func/' +'sub-'+subName+'_' +session + '_task-' + taskName + '_bold' + checkGz(b)))
+            os.rename(os.path.join(fullPath, 'func', n), (fullPath  + '/func/' +subName+'_' +session + '_task-' + taskName + '_bold' + checkGz(b)))
         else:
             print (n + 'Is MISC')
             shutil.move((fullPath + '/' + n), (fullPath + '/misc/' + n))
@@ -129,12 +130,13 @@ def organizeFiles(outpu_dir, subName, session):
 
 #%%
 sessionDict = {
-        'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1339/kpe1339_scan1_pb2571_harpaz-rotem',
-'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1339/kpe1339_scan2_pb2615_harpaz-rotem',
-'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1339/kpe1339_scan3_pb2908_harpaz-rotem',
-'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1339/kpe1339_scan4_pb3374_harpaz-rotem'
+       
+        'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1369/kpe1369_scan1_pb3831_harpaz-rotem',
+'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1369/kpe1369_scan2_pb3882_harpaz-rotem',
+'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1369/kpe1369_scan3_pb4038_harpaz-rotem',
+'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1369/kpe1369_scan4_pb4437_harpaz-rotem'
         }
-subNumber = '1339'
+subNumber = '1369'
 def fullBids(subNumber, sessionDict):
     output_dir = '/media/Data/kpe_forFmriPrep/'
     subName = 'sub-' + subNumber

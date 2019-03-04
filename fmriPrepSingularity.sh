@@ -12,11 +12,11 @@
 echo "Running script"
 
 singularity run --cleanenv /home/oad4/fmriprep/fmriprep-latest.simg \
-/home/oad4/scratch60/r_a_ptsd/ /home/oad4/scratch60/output \
+/home/oad4/scratch60/kpe_FmriPrep/ /home/oad4/scratch60/output \
 participant \
 --skip_bids_validation \
 --fs-license-file /home/oad4/freesurferLicense/license.txt \
 -w /home/oad4/scratch60/work \
---nthreads 24 \
---participant-label 1346
-
+--nthreads 8 \
+--participant-label 008 \
+--ignore slicetiming
