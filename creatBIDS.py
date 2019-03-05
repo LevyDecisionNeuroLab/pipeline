@@ -12,14 +12,14 @@ import os
 from nipype.interfaces.dcm2nii import Dcm2niix
 import shutil
 # folder names:
-folder_name = ['anat','func','dwi','other']
-subNumber = '1263'
-session = 'ses-4'
-
-source_dir = '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1223/kpe1223_scan4_pb2126_harpaz-rotem'
-output_dir = '/media/Data/kpe_forFmriPrep/'
-
-subName = 'sub-' + subNumber
+#folder_name = ['anat','func','dwi','other']
+#subNumber = '1263'
+#session = 'ses-4'
+#
+#source_dir = '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1223/kpe1223_scan4_pb2126_harpaz-rotem'
+#output_dir = '/media/Data/kpe_forFmriPrep/'
+#
+#subName = 'sub-' + subNumber
 #%% Convert functions Converts DICOM to NIFTI.GZ
 def convert (source_dir, output_dir, subName, session): # this is a function that takes input directory, output directory and subject name and then converts everything accordingly
     try:
@@ -92,7 +92,8 @@ convert(source_dir, output_dir, subName, session) # run conversion
 #       # os.rename(os.path.join(fullPath, 'misc', n), (fullPath +'/misc/' +'sub-'+subName+'_ses-' +sessionNum + '_MISC' + checkGz(b)))
 
 #%%
-def organizeFiles(outpu_dir, subName, session):
+def organizeFiles(output_dir, subName, session):
+    
     fullPath = os.path.join(output_dir, subName, session)
     os.makedirs(fullPath + '/dwi')
     os.makedirs(fullPath + '/anat')    
@@ -130,13 +131,12 @@ def organizeFiles(outpu_dir, subName, session):
 
 #%%
 sessionDict = {
-       
-        'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1369/kpe1369_scan1_pb3831_harpaz-rotem',
-'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1369/kpe1369_scan2_pb3882_harpaz-rotem',
-'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1369/kpe1369_scan3_pb4038_harpaz-rotem',
-'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1369/kpe1369_scan4_pb4437_harpaz-rotem'
+        'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1223/kpe1223_scan1_pb1402_harpaz-rotem',
+'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1223/kpe1223_scan2_pb1450_harpaz-rotem',
+'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1223/kpe1223_scan3_pb1687_harpaz-rotem',
+'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1223/kpe1223_scan4_pb2126_harpaz-rotem'
         }
-subNumber = '1369'
+subNumber = '1223'
 def fullBids(subNumber, sessionDict):
     output_dir = '/media/Data/kpe_forFmriPrep/'
     subName = 'sub-' + subNumber
