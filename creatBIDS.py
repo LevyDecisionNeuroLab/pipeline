@@ -85,12 +85,12 @@ def organizeFiles(output_dir, subName, session):
 #%%
 sessionDict = {
 
-    #    'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1263/kpe1263_scan1_pb1019_harpaz-rotem',
-#'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1263/kpe1263_scan2_pb1069_harpaz-rotem',
-#'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1263/kpe1263_scan3_pb1303_harpaz-rotem',
-'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe008/kpe008_scan4_pb1453_harpaz-rotem'
+      'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan1_pb4681_harpaz-rotem',
+'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan2_pb4728_harpaz-rotem',
+'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan3_pb6902_harpaz-rotem',
+'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan4_pb7393_harpaz-rotem'
         }
-subNumber = '008'
+subNumber = '1403'
 def fullBids(subNumber, sessionDict):
     output_dir = '/media/Data/kpe_forFmriPrep/'
     subName = 'sub-' + subNumber

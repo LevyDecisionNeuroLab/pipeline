@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --partition=general
-#SBATCH --job-name=fmriPrep1346
+#SBATCH --job-name=fmriPrepKPE008
 #SBATCH --ntasks=1 --nodes=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem-per-cpu=8000
@@ -11,12 +11,16 @@
 
 echo "Running script"
 
-singularity run --cleanenv /home/oad4/fmriprep/fmriprep-latest.simg \
-/home/oad4/scratch60/kpe_forFmriPrep/ /home/oad4/scratch60/output \
+singularity run --cleanenv /home/oad4/fmriprep/fmriprep-1.2.6.simg \
+/home/oad4/scratch60/kpeBIDS/kpe_forFmriPrep /home/oad4/scratch60/kpeOutput \
 participant \
 --skip_bids_validation \
 --fs-license-file /home/oad4/freesurferLicense/license.txt \
 -w /home/oad4/scratch60/work \
 --nthreads 8 \
---participant-label 1223 \
---ignore slicetiming
+--ignore slicetiming \
+--participant_label 008
+
+
+
+
