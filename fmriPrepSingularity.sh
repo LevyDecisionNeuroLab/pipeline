@@ -11,7 +11,7 @@
 
 echo "Running script"
 
-singularity run --cleanenv /home/oad4/fmriprep/fmriprep-1.2.6.simg \
+singularity run --cleanenv /project/ysm/levy_ifat/fmriPrep/fmriprep-latest.simg \
 /home/oad4/scratch60/kpeBIDS/kpe_forFmriPrep /home/oad4/scratch60/kpeOutput \
 participant \
 --skip_bids_validation \
