@@ -3,6 +3,7 @@
 """
 Created on Thu Mar 21 12:26:07 2019
 A script to create dictionary of scan sessions for feeding into fmriprep
+Then convert DICOM to NIFTI.GZ, and organize files according to BIDS
 
 @author: Or Duek, Ruonan Jia
 """
@@ -11,7 +12,8 @@ A script to create dictionary of scan sessions for feeding into fmriprep
 import os
 import glob
 
-#%% function. It calls other functions. Should first load them in creatBIDS.py by Or
+#%% function. 
+# It calls other functions. Should first load them in creatBIDS.py by Or
 def fullBids(subNumber, sessionDict, output_dir):
     subName = 'sub-' + subNumber
   #  folder_name = ['anat','func','dwi','other']
@@ -55,7 +57,7 @@ for sub_idx in range(len(sub_id)):
 # check number of subject, and number of dictionary list
 len(sub_id)
 len(session_dict)
-
+# check if sub_id and session_dict matched by subject id
 idx = 49
 print(sub_id[idx])
 print(session_dict[idx])
@@ -67,6 +69,9 @@ sessionDict = {
         }
 subNumber = '3'
 
+output_dir = '/media/Data/R_A_PTSD/data_bids_converted/' 
+
+fullBids(subNumber, sessionDict, output_dir)
 
 #%% convert
 output_dir = '/media/Data/R_A_PTSD/data_bids_converted/' 
