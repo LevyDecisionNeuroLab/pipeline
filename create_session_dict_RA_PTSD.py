@@ -48,7 +48,7 @@ for sub_idx in range(len(sub_id)):
     subject_id = sub_id[sub_idx]
     session_dict_sub = {}
     for i in folder:        
-        if i.find(subject_id)!=-1:
+        if i.find('subj%s' %subject_id)!=-1:
             session_count = session_count + 1
             print(i)
             session_dict_sub.update({'ses-%s' % session_count: i})
@@ -58,9 +58,8 @@ for sub_idx in range(len(sub_id)):
 len(sub_id)
 len(session_dict)
 # check if sub_id and session_dict matched by subject id
-idx = 49
-print(sub_id[idx])
-print(session_dict[idx])
+subject_test = '38'
+session_dict[sub_id.index(subject_test)]
     
 #%% for converting individual subject
 sessionDict = {
@@ -76,10 +75,13 @@ fullBids(subNumber, sessionDict, output_dir)
 #%% convert
 output_dir = '/media/Data/R_A_PTSD/data_bids_converted/' 
 
+# exclude those already converted
+exclude = ['3','1360','111','1309','1346','1063','1206','1326','1232','1344','1325','1300','1337','1305','1237','1347','1234']
+
 for sub_idx in range(len(sub_id)):
     subject_id = sub_id[sub_idx]
     
-    if subject_id != '3': # subjec 3 already converted
+    if subject_id not in exclude:
         fullBids(subject_id, session_dict[sub_idx], output_dir)
         
 
