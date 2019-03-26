@@ -63,10 +63,10 @@ session_dict[sub_id.index(subject_test)]
     
 #%% for converting individual subject
 sessionDict = {
-        'ses-1': '/media/Drobo/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/subj3/ta8967_levy',
-        'ses-2': '/media/Drobo/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/subj3/ta8996_levy'
+        'ses-1': '/media/Drobo/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/subj1328/pb2359_harpaz-rotem',
+        'ses-2': '/media/Drobo/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/subj1328/pb2815_levy'
         }
-subNumber = '3'
+subNumber = '1328'
 
 output_dir = '/media/Data/R_A_PTSD/data_bids_converted/' 
 
@@ -78,7 +78,7 @@ output_dir = '/media/Data/R_A_PTSD/data_bids_converted/'
 # exclude those already converted
 exclude = ['3','1360','111','1309','1346','1063','1206','1326','1232','1344','1325','1300','1337','1305','1237','1347','1234']
 
-for sub_idx in range(len(sub_id)):
+for sub_idx in range(86, len(sub_id)):
     subject_id = sub_id[sub_idx]
     
     if subject_id not in exclude:
