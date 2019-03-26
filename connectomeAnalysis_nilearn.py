@@ -38,8 +38,10 @@ masker = NiftiLabelsMasker(labels_img=atlas_filename, standardize=True,
 # extraction
 time_series = masker.fit_transform(fmri_filenames, confounds=data.confounds)
 
+time_series.shape
+
 from nilearn.connectome import ConnectivityMeasure
-correlation_measure = ConnectivityMeasure(kind='correlation')
+correlation_measure = ConnectivityMeasure(kind='correlation', vectorize = True)
 correlation_matrix = correlation_measure.fit_transform([time_series])[0]
 
 # Mask the main diagonal for visualization:
