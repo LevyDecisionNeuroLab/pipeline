@@ -58,15 +58,16 @@ for sub_idx in range(len(sub_id)):
 len(sub_id)
 len(session_dict)
 # check if sub_id and session_dict matched by subject id
-subject_test = '125'
+subject_test = '1350'
 session_dict[sub_id.index(subject_test)]
     
 #%% for converting individual subject
+
+# there are two subjects whose scan is under_harpaz-rotem, need to manually convert it
 sessionDict = {
-        'ses-1': '/media/Drobo/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/subj1328/pb2359_harpaz-rotem',
-        'ses-2': '/media/Drobo/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/subj1328/pb2815_levy'
+        'ses-2': '/media/Drobo/Levy_Lab/Projects/R_A_PTSD_Imaging/Data/Scans/Multiband/subj1350/pb3231_harpaz-rotem'
         }
-subNumber = '1328'
+subNumber = '1350'
 
 output_dir = '/media/Data/R_A_PTSD/data_bids_converted/' 
 
