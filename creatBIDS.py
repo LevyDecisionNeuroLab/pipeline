@@ -83,14 +83,14 @@ def organizeFiles(output_dir, subName, session):
 
 
 #%%
-sessionDict = {
-
-      'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan1_pb4681_harpaz-rotem',
-'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan2_pb4728_harpaz-rotem',
-'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan3_pb6902_harpaz-rotem',
-'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan4_pb7393_harpaz-rotem'
-        }
-subNumber = '1403'
+#sessionDict = {
+#
+#      'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan1_pb4681_harpaz-rotem',
+#'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan2_pb4728_harpaz-rotem',
+#'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan3_pb6902_harpaz-rotem',
+#'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan4_pb7393_harpaz-rotem'
+#        }
+#subNumber = '1403'
 def fullBids(subNumber, sessionDict):
     output_dir = '/media/Data/kpe_forFmriPrep/'
     subName = 'sub-' + subNumber
@@ -108,4 +108,4 @@ def fullBids(subNumber, sessionDict):
     
     #print (v)
 #%%
-fullBids(subNumber, sessionDict)
+#fullBids(subNumber, sessionDict)

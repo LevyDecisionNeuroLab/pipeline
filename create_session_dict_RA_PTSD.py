@@ -14,6 +14,8 @@ import glob
 
 #%% function. 
 # It calls other functions. Should first load them in creatBIDS.py by Or
+from creatBIDS import convert, checkGz, checkTask, organizeFiles
+
 def fullBids(subNumber, sessionDict, output_dir):
     subName = 'sub-' + subNumber
   #  folder_name = ['anat','func','dwi','other']

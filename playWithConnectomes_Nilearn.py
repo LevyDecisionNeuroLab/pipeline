@@ -67,8 +67,8 @@ for i in confound_files:
 
 
 confoundReal_files = ['/home/or/nilearn/sub-%s_ses-2_task-rest_desc-confounds_regressors.tsv' % (sub) for sub in subList]
-canica = CanICA(n_components=20, smoothing_fwhm=6.,
-                memory="/media/Data/nilearn", memory_level=2,
+canica = CanICA(n_components=5, smoothing_fwhm=6.,
+                memory="/media/Data/nilearn", memory_level=5,
                 threshold=3., verbose=10, random_state=0)#, mask = "/media/Data/work/custom_modelling_spm/group_mask.nii.gz")
 canica.fit(rest_files)
 components_img = canica.components_img_
