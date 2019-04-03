@@ -7,8 +7,8 @@ conda info --env
 
 
 # activate an enviornment (this env was already created before)
-source activate py37_dev
+source activate py37_dev (or your name of env)
 
 
-
-
+# run jupyter
+jupyter notebook &
