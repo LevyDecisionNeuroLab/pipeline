@@ -14,7 +14,7 @@ import json
 import os
 
 
-
+#%%
 def lookSeriesNum(fileName):
     # this function takes filename and return series number (from json file)
     with open(fileName) as f:
@@ -22,17 +22,39 @@ def lookSeriesNum(fileName):
     return data["SeriesNumber"]
 
 
-
-directory = '/home/or/Documents/dicom_niix/sub76/raw/bold'
+#%%
 def addSeriesNum(directory): 
-    # this function takes folder in which we have many bold files and add series number (the lower number means first)
+    # this function takes folder in which we have many bold files, get rid of the unecessary file suffix, and add series number (the lower number means first)
     for files in os.listdir(directory):
         os.chdir(directory)
         if 'json'in files:
-            # get Series Number and keep it
-            #print(os.path.splitext(files)[0])
-            shouldChange = os.path.splitext(files)[0] # getting the filename without extension. 
+            # get Series Number and keep it           
             serial = lookSeriesNum(files)
-            os.rename(shouldChange + '.nii.gz', shouldChange + str(serial) + '.nii.gz')
+            
+            # change file name
+            shouldChange = os.path.splitext(files)[0] # getting the filename without extension.
+            shouldChange_simp = shouldChange.split('-(')[0] # get rid od  '-(MB4iPAT2)_bold'
+            os.rename(shouldChange + '.nii.gz', shouldChange_simp + str(serial) + '.nii.gz')
+            os.rename(shouldChange + '.json', shouldChange_simp + str(serial) + '.json')           
         else:
            continue
+
+#%%
+
+
+
+
+directory = 'Y:/R_A_PTSD/data_bids_converted/sub-3/ses-2/func - Copy'
+addSeriesNum(directory)
+        
+#%% Testing code
+directory = 'Y:/R_A_PTSD/data_bids_converted/sub-3/ses-2/func - Copy'
+os.chdir(directory)
+filename_test = 'sub-3_ses-2_task-(MB4iPAT2)_bold.json'
+
+shouldChange = filename_test.split('-(')[0]
+
+serial = lookSeriesNum(filename_test)
+
+
+
