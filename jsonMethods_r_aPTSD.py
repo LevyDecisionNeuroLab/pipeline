@@ -33,11 +33,13 @@ def addSeriesNum(directory):
             
             # change file name
             shouldChange = os.path.splitext(files)[0] # getting the filename without extension.
-            shouldChange_simp = shouldChange.split('(')[0] # get rid of  '(MB4iPAT2)_bold'
-            os.rename(shouldChange + '.nii.gz', shouldChange_simp + str(serial) + '.nii.gz')
-            os.rename(shouldChange + '.json', shouldChange_simp + str(serial) + '.json')           
+            # get rid of  '(MB4iPAT2)'
+            shouldChange_simp = shouldChange.split('(')[0]
+            os.rename(shouldChange + '.nii.gz', shouldChange_simp + str(serial) + '_bold.nii.gz')
+            os.rename(shouldChange + '.json', shouldChange_simp + str(serial) + '_bold.json')           
         else:
            continue
+
 
 #%% Loop through all subjects
 
@@ -63,17 +65,8 @@ for sub_dir in os.listdir(root_dir):
 
 
 #%% change single session for one subject
-directory = 'Y:/R_A_PTSD/data_bids_converted/sub-3/ses-2/func - Copy'
+directory = 'Y:/R_A_PTSD/data_bids_converted/sub-3/ses-1 - Copy/func'
 addSeriesNum(directory)
-        
-#%% Testing code
-directory = 'Y:/R_A_PTSD/data_bids_converted/sub-3/ses-2/func - Copy'
-os.chdir(directory)
-filename_test = 'sub-3_ses-2_task-(MB4iPAT2)_bold.json'
-
-shouldChange = filename_test.split('-(')[0]
-
-serial = lookSeriesNum(filename_test)
 
 
 
