@@ -5,13 +5,13 @@ A repository for pipeline scripts - including organizing files, prepossessing an
 
 module load miniconda &
 
-# if you want to know which enviornments are ther
+### if you want to know which enviornments are ther
 conda info --env
 
 
-# activate an enviornment (this env was already created before)
+### activate an enviornment (this env was already created before)
 source activate py37_dev (or your name of env)
 
 
-# run jupyter
+### run jupyter
 jupyter notebook &
