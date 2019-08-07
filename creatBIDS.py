@@ -41,6 +41,11 @@ def checkTask(filename):
     sep = 'bold'
     rest = filename.split(sep)[1] # takes the last part of filename
     taskName = rest.split('.',1)[0]
+    if taskName.find('(MB4iPAT2)')!=-1: # if the filename contains these words - remove it
+        taskName = taskName.split('(MB4iPAT2)') # this is the part that will be omitted from the file name. If you have an extra - you should add that too. 
+        taskName = taskName[0] + taskName[1] # cmobine toghether
+   
+
     return taskName.replace("_","")
 
 
@@ -59,17 +64,20 @@ def organizeFiles(output_dir, subName, session):
     for n in a[2]:
         print (n)
         b = os.path.splitext(n)
-        
+        # add method to find (MB**) in filename and scrape it
         if n.find('diff')!=-1:
             print ('This file is DWI')
             shutil.move((fullPath +'/' + n), fullPath + '/dwi/' + n)
             os.rename((os.path.join(fullPath, 'dwi' ,n)), (fullPath + '/' + 'dwi' +'/' + subName + '_' + session +'_dwi' + checkGz(b)))
-            
-            
+   
         elif n.find('MPRAGE')!=-1:
             print (n + ' Is Anat')
             shutil.move((fullPath + '/' + n), (fullPath + '/anat/' + n))
-            os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + subName+ '_' + session + '_T1w' + checkGz(b)))
+            os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + subName+ '_' + session + '_acq-mprage_T1w' + checkGz(b)))
+        elif n.find('t1_flash')!=-1:
+            print (n + ' Is Anat')
+            shutil.move((fullPath + '/' + n), (fullPath + '/anat/' + n))
+            os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + subName+ '_' + session + '_acq-flash_T1w' + checkGz(b)))
         elif n.find('bold')!=-1:
             print(n  + ' Is functional')
             taskName = checkTask(n)
@@ -79,20 +87,20 @@ def organizeFiles(output_dir, subName, session):
             print (n + 'Is MISC')
             shutil.move((fullPath + '/' + n), (fullPath + '/misc/' + n))
            # os.rename(os.path.join(fullPath, 'misc', n), (fullPath +'/misc/' +'sub-'+subName+'_ses-' +sessionNum + '_MISC' + checkGz(b)))
-
-
+    
+# need to run thorugh misc folder and extract t1's when there is no MPRAGE - Need to solve issue with t1 - as adding the names is not validated with BIDS
 
 #%%
-#sessionDict = {
-#
-#      'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan1_pb4681_harpaz-rotem',
-#'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan2_pb4728_harpaz-rotem',
-#'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan3_pb6902_harpaz-rotem',
-#'ses-4': '/media/Drobo/Levy_Lab/Projects/PTSD_KPE/scan_data/raw/kpe1403/kpe1403_scan4_pb7393_harpaz-rotem'
-#        }
-#subNumber = '1403'
+sessionDict = {
+
+      'ses-1': '/media/Drobo/Levy_Lab/Projects/PTSD_reconsolidation/TrioB/Scan_data/newer/RCF020/RCF020_D1_tb1506_harpaz-rotem',
+'ses-2': '/media/Drobo/Levy_Lab/Projects/PTSD_reconsolidation/TrioB/Scan_data/newer/RCF020/RCF020_D2_tb1515_harpaz-rotem',
+#'ses-3': '/media/Drobo/Levy_Lab/Projects/PTSD_reconsolidation/TrioB/Scan_data/newer/RCF020/RCF020_D3_tb1521_harpaz-rotem',
+#'ses-4': '/media/Data/PTSD_KPE/kpe1468/kpe1468_scan4_pb9179_harpaz-rotem'
+        }
+subNumber = '020'
 def fullBids(subNumber, sessionDict):
-    output_dir = '/media/Data/kpe_forFmriPrep/'
+    output_dir = '/media/Data/work/'
     subName = 'sub-' + subNumber
   #  folder_name = ['anat','func','dwi','other']
     

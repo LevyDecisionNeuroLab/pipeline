@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1 --nodes=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem-per-cpu=8000
-#SBATCH --time=12:00:00
+#SBATCH --time=16:00:00
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=or.duek@yale.edu
 
