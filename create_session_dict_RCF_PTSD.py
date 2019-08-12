@@ -11,7 +11,8 @@ Then convert DICOM to NIFTI.GZ, and organize files according to BIDS
 #%% import library
 import os
 import glob
-
+# change to pipeline dir
+os.chdir('/home/or/Levy_Pipeline')
 #%% function. 
 # It calls other functions. Should first load them in creatBIDS.py by Or
 from creatBIDS import convert, checkGz, checkTask, organizeFiles
@@ -82,15 +83,16 @@ session_dict[sub_id.index(subject_test)]
 output_dir = '/media/Data/RCF_BidsConversion/' 
 
 # exclude those already converted
-#exclude = ['3','1360','111','1309','1346','1063','1206','1326','1232','1344','1325','1300','1337','1305','1237','1347','1234']
+exclude = ['1376','1457','011','1205','1247','1384','1444','1099','1392','1269','1218','1445', '1312','1359','1291','1362','1245','030','1272','1221']
 
 # only convert these subjects
 #include = ['122', '008', '120', '100', '125']
 
 for sub_idx in range(0, len(sub_id)):
     subject_id = sub_id[sub_idx]
-    fullBids(subject_id, session_dict[sub_idx], output_dir)
-    # if subject_id not in exclude:
+   # fullBids(subject_id, session_dict[sub_idx], output_dir)
+    if subject_id not in exclude:
+        fullBids(subject_id, session_dict[sub_idx], output_dir)
     #if subject_id in include:
         
         
