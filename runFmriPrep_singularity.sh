@@ -16,7 +16,7 @@
 SUBJ=(1307)
 
 BIDS_DIR="/home/oad4/scratch60/KPE_BIDS" # change directory
-DERIVS_DIR="derivatives" # the end point folder for fmriprep (should be in derivatives so don't touch unless you're know what yoou're doing)
+DERIVS_DIR="/derivatives" # the end point folder for fmriprep (should be in derivatives so don't touch unless you're know what yoou're doing)
 WORK_DIR="/home/oad4/scratch60/work_kpe" # enter working directory here
 
 mkdir -p $HOME/.cache/templateflow
