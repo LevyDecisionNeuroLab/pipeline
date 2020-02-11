@@ -16,7 +16,7 @@
 SUBJ=(1307)
 
 BIDS_DIR="/home/oad4/scratch60/KPE_BIDS" # change directory
-DERIVS_DIR="/derivatives" # the end point folder for fmriprep (should be in derivatives)
+DERIVS_DIR="/derivatives" # the end point folder for fmriprep (should be in derivatives so don't touch unless you're know what yoou're doing)
 WORK_DIR="/home/oad4/scratch60/work_kpe" # enter working directory here
 
 mkdir -p $HOME/.cache/templateflow
@@ -25,7 +25,7 @@ mkdir -p ${BIDS_DIR}/derivatives/freesurfer-6.0.1
 ln -s ${BIDS_DIR}/derivatives/freesurfer-6.0.1 ${BIDS_DIR}/${DERIVS_DIR}/freesurfer
 
 
-export SINGULARITYENV_FS_LICENSE=$HOME/freesurferLicense/license.txt # freesurfer license file
+export SINGULARITYENV_FS_LICENSE=$HOME/pipeline/licenseFreeSurfer.txt # freesurfer license file
 export SINGULARITYENV_TEMPLATEFLOW_HOME="/templateflow"
 SINGULARITY_CMD="singularity run --cleanenv -B $HOME/.cache/templateflow:/templateflow -B ${WORK_DIR}:/work /project/ysm/levy_ifat/fmriPrep/fmriprep-1.5.8.simg"
 
