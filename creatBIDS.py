@@ -121,9 +121,11 @@ fullBids(subNumber, sessionDict)
 #%%
 import glob
 import json
+import os 
 
+subNumber = '018'
 ses = {}
-root_dir='/media/Data/Aging/AgingBIDS/'
+root_dir='/home/rl829/scratch60/agingBIDS/'
 file_structure = '/ses-1/func/sub-*_ses-1*.json'
 #glober = root_dir+file_stracture
 
