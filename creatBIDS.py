@@ -78,6 +78,14 @@ def organizeFiles(output_dir, subName, session):
             print (n + ' Is Anat')
             shutil.move((fullPath + '/' + n), (fullPath + '/anat/' + n))
             os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + subName+ '_' + session + '_acq-flash_T1w' + checkGz(b)))
+        elif n.find('t1_fl2d')!=-1:
+            print (n + ' Is Anat')
+            shutil.move((fullPath + '/' + n), (fullPath + '/anat/' + n))
+            os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + subName+ '_' + session + '_acq-fl2d1_T1w' + checkGz(b))) 
+        elif n.find('GRE_3D_Sag_Spoiled')!=-1:
+            print (n + ' Is Anat')
+            shutil.move((fullPath + '/' + n), (fullPath + '/anat/' + n))
+            os.rename(os.path.join(fullPath,'anat' , n), (fullPath + '/anat/' + subName+ '_' + session + '_acq-gre_spoiled_T1w' + checkGz(b)))            
         elif n.find('bold')!=-1:
             print(n  + ' Is functional')
             taskName = checkTask(n)
