@@ -93,16 +93,47 @@ sub_id = list(set(sub_id))
 
 # session dictionary
 session_dict = [] # each element is a dictionary, for a single subject
+sub_reordered = [] # subject id that reordered session number
+sub_one_ses = [] # subject id who only had one session of data
+sub_three_ses = [] # subject id who had three sessions of data
+
 for sub_idx in range(len(sub_id)): 
     session_count = 0
     subject_id = sub_id[sub_idx]
-    session_dict_sub = {}
+    sessions_sub = {}
     for i in folder:        
         if i.find('subj%s/' %subject_id)!=-1:
             session_count = session_count + 1
             print(i)
-            session_dict_sub.update({'ses-%s' % session_count: i})
-    session_dict.append(session_dict_sub)
+            sessions_sub.update({session_count: i})                
+
+    # get all study numbers
+    study_nums ={}
+    for ses_key in sessions_sub.keys():
+        study_num = int(sessions_sub[ses_key].split('subj%s/' %subject_id)[1].split('_levy')[0][2:])
+        study_nums.update({ses_key: study_num})
+        
+    # compare study nnumber levy_####, and determine session order
+    sessions_re_sub = {} 
+    if len(study_nums) == 2:
+        if study_nums[1] > study_nums[2]:
+            sessions_re_sub.update({'ses-1': sessions_sub[2]})
+            sessions_re_sub.update({'ses-2': sessions_sub[1]})
+            sub_reordered.append(subject_id)
+        else:
+            sessions_re_sub.update({'ses-1': sessions_sub[1]})
+            sessions_re_sub.update({'ses-2': sessions_sub[2]})            
+    else:
+        session_re_sub = sessions_sub
+        if len(study_nums) == 1:
+            sub_one_ses.append(subject_id)
+        elif len(study_nums) == 3:
+            sub_three_ses.append(subject_id)
+        
+    session_dict.append(sessions_re_sub)
+    
+    # reorder session id
+    
 
 # check number of subject, and number of dictionary list
 len(sub_id)
