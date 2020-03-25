@@ -12,7 +12,17 @@ It should help reorganizing files in time order, when filenames are on same cond
 
 import json
 import os
+import glob
 
+#%% check subject task number
+sub_id = 99
+files = os.listdir("/gpfs/ysm/project/levy_ifat/share/ra_ptsd/data_bids/sub-%s/ses-1/func/" %sub_id)
+files.sort()
+files
+#%%
+files = os.listdir("/gpfs/ysm/project/levy_ifat/share/ra_ptsd/data_bids/sub-%s/ses-2/func/" %sub_id)
+files.sort()
+files
 
 #%%
 def lookSeriesNum(fileName):
@@ -88,7 +98,9 @@ shouldChange_simp
 
 
 #%% rename based on absolute order of task. NEEDS TO BE CHANGED 
-data_root = '/home/rj299/project/mdm_analysis/data_rename'
+#data_root = '/home/rj299/project/mdm_analysis/data_rename'
+
+data_root = '/gpfs/ysm/project/levy_ifat/share/ra_ptsd/data_bids'
 #%%
 # functions for changing file names
 
@@ -98,8 +110,7 @@ def addRunNum(directory):
     
     Parameters
     --------------
-    directory: directory for a subject, contains data for all runs
-    
+    directory: session directory for a subject, contains data for all runs
     """
     
     os.chdir(directory)
@@ -108,45 +119,82 @@ def addRunNum(directory):
     task_num_all = getTaskNum(directory)
     
     # add run number and rename
-    for filename in os.listdir(directory):
-        # get task number
-        task_num = int(filename.split('_task-task')[1].split('_')[0])
+    for filename in glob.glob('sub-*_task-*_bold.nii.gz'):
+#    for filename in os.listdir(directory):
+        if 'rest' in filename:
+            continue
+        else:
+            # get task number
+            task_num = int(filename.split('_task-')[1].split('_')[0])
+            
+            # get the run number based on all the task number in the directory
+            run_count = task_num_all.index(task_num) + 1
+    
+            
+            filename_new = filename.split('_task-%s' %task_num)[0] + '_task-run-%s' %run_count + filename.split('_task-%s' %task_num)[1]
+    
+            os.rename(filename, filename_new)
+            os.rename(filename.split('.nii.')[0] + '.json', filename_new.split('.nii.')[0] + '.json')
+            
+            print(filename)
+            print(filename_new)
+    
+    print()
+    
+    # get rid of run-
+    for filename in glob.glob('sub-*_task-run*_bold.nii.gz'):
+        filename_new = filename.split('_task-run-')[0] + '_task-' + filename.split('_task-run-')[1]
         
-        # get the run number based on all the task number in the directory
-        run_count = task_num_all.index(task_num) + 1
-
+        os.rename(filename, filename_new)
+        os.rename(filename.split('.nii.')[0] + '.json', filename_new.split('.nii.')[0] + '.json')
         
-        filename_new = filename.split('_task-task%s' %task_num)[0] + '_task-%s' %run_count + filename.split('_task-task%s' %task_num)[1]
-
-        os.rename(filename, filename_new)  
+        print(filename)
         print(filename_new)
 
+    print()
 # get all task numbers for ses one
 def getTaskNum(directory):
     """ Get all the task number for a session
      
     Parameters
     -----------------
-    directory: data directory for a subject
+    directory: session data directory for a subject
     
     Return
     -----------------
     task_num: sorted task number for each session
     """
-    file_ses = glob.glob('sub-*_ses-1_task*_bold.nii.gz')
+    file_ses = glob.glob('sub-*_task-*_bold.nii.gz')
     
     task_num = []
     
     for file in file_ses:
-        task_id = file.split('_task-task')[1].split('_space')[0]
-        task_num.append(int(task_id))
+        if 'rest' in file: # skip resting state scan
+            continue
+        else:
+            task_id = file.split('_task-')[1].split('_')[0]
+            task_num.append(int(task_id))
     
     task_num.sort()
     
     return task_num
 
+#%%
+# list of subject ID
+folder = glob.glob(os.path.join(data_root, 'sub-*'))
+
 #%% NEEDS to be run only once
-    
+# sub_id = 3
+for sub in folder:
+    sub_fold = glob.glob(os.path.join(sub, 'ses-*'))
+
+    for fold in sub_fold:
+        if 'sub-3/' in fold:
+            continue
+        else:
+            fold_func = os.path.join(fold, 'func')
+            addRunNum(fold_func)
+     
 # rename files and add run number in the file name
 # needs running only ONCE
 sub_fold = ['/home/rj299/project/mdm_analysis/data_rename/sub-2654',
