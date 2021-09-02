@@ -1,8 +1,9 @@
 #!/bin/bash
 #
-#SBATCH -J fmriprep
-#SBATCH --array=1  # Replace indices with the right number of subjects
-#SBATCH --time=60:00:00
+#SBATCH -J fmriprepNF
+#SBATCH --partition=general
+#SBATCH --array=1 # Replace indices with the right number of subjects
+#SBATCH --time=20:00:00
 #SBATCH -n 1
 #SBATCH --cpus-per-task=16
 #SBATCH --mem-per-cpu=4G
@@ -13,21 +14,21 @@
 #SBATCH --mail-type=ALL
 # ------------------------------------------
 
-SUBJ=(1307)
+SUBJ=(1552) ## add subjects here
 
-BIDS_DIR="/home/oad4/scratch60/KPE_BIDS" # change directory
+BIDS_DIR="/home/oad4/scratch60/nf" # change directory
 DERIVS_DIR="/derivatives" # the end point folder for fmriprep (should be in derivatives so don't touch unless you're know what yoou're doing)
-WORK_DIR="/home/oad4/scratch60/work_kpe" # enter working directory here
+WORK_DIR="/home/oad4/scratch60/work3" # enter working directory here
 
 mkdir -p $HOME/.cache/templateflow
-mkdir -p ${BIDS_DIR}/${DERIVS_DIR}
-mkdir -p ${BIDS_DIR}/derivatives/freesurfer-6.0.1
+#mkdir -p ${BIDS_DIR}/${DERIVS_DIR}
+#mkdir -p ${BIDS_DIR}/derivatives/freesurfer-6.0.1
 ln -s ${BIDS_DIR}/derivatives/freesurfer-6.0.1 ${BIDS_DIR}/${DERIVS_DIR}/freesurfer
 
 
 export SINGULARITYENV_FS_LICENSE=$HOME/pipeline/licenseFreeSurfer.txt # freesurfer license file
 export SINGULARITYENV_TEMPLATEFLOW_HOME="/templateflow"
-SINGULARITY_CMD="singularity run --cleanenv -B $HOME/.cache/templateflow:/templateflow -B ${WORK_DIR}:/work /project/ysm/levy_ifat/fmriPrep/fmriprep-1.5.8.simg"
+SINGULARITY_CMD="singularity run --cleanenv -B $HOME/.cache/templateflow:/templateflow -B ${WORK_DIR}:/work /gpfs/gibbs/pi/levy_ifat/shared//fmriPrep/fmriprep-20.0.6.simg"
 
 
 
