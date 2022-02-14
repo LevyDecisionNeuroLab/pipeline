@@ -6,7 +6,7 @@ A repository for pipeline scripts - including organizing files, prepossessing an
 ### Conda - Why?
 To run some of the code in this repository certain packages requires installation. 
 One way to do that is go one by one - This takes time and also makes the installation applies the whole system in which it is installed. 
-A different approach, is to define dedicated environments (e.g. per project; e.g. for the project of running the pipeline). [Conda] (https://docs.conda.io/en/latest/) allows the definition of such independent environments, and the easy installation of packages in that environment. Conda can be installed on a local PC (your computer) and is already installed and ready to use on the HPC.
+A different approach, is to define dedicated environments (e.g. per project; e.g. for the project of running the pipeline). (Conda) [https://docs.conda.io/en/latest/] allows the definition of such independent environments, and the easy installation of packages in that environment. Conda can be installed on a local PC (your computer) and is already installed and ready to use on the HPC.
 
 ### Conda - HowTo?
  Simple script to run and operate python 3.7 in anaconda within the Farnam HPC.
