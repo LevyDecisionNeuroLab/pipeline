@@ -30,6 +30,7 @@ Activating one of the the existing  environments (those listed by _conda info --
 Say you have an environment ready with all kinds of packages and you want to share it (with a colleague, or with a publication to assist others with running your code). You can list all the requirements of the current environment by running the command:
 
 `conda list`
+
  And to save it into a file, e.g. one named _requirements.txt_, run the command:
 
 ` conda list -e > requirements.txt`
