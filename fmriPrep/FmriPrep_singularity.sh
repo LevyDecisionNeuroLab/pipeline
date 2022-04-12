@@ -17,7 +17,7 @@
 #
 # Once your dataset is ready (bids validated/decided to ignore) 
 # 1. change the name of the job (what ever you feel like) on line 25
-# 2. Change the number of participants on line 26
+# 2. Change the number of participants on line 26  and change email addres on line 36
 # 3. add a list of subjects
 # 4. adjust directories path
 # 5. From the HPC terminal run using the command "sbatch FmriPrep_singularity.sh"
@@ -57,7 +57,7 @@ mkdir -p ${BIDS_DIR}/${DERIVS_DIR}/freesurfer-6.0.1
 ln -s    ${BIDS_DIR}/${DERIVS_DIR}/freesurfer-6.0.1 ${BIDS_DIR}/${DERIVS_DIR}/freesurfer
 
 # this is loading the license to run freesurfer
-export SINGULARITYENV_FS_LICENSE=$HOME/pipeline/licenseFreeSurfer.txt # freesurfer license file
+export SINGULARITYENV_FS_LICENSE=/gpfs/gibbs/pi/levy_ifat/shared/licenseFreeSurfer.txt # freesurfer license file
 
 # this create a folder for fMRIprep. If fMRIprep fails to run clean this folder 
 # cd ~/.cache/templateflow/
