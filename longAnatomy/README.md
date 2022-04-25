@@ -2,4 +2,4 @@
 
 read this:
 
-https://github.com/LevyDecisionNeuroLab/pipeline/tree/master/longAnatomy
+https://docs.google.com/document/d/1P87yPge5Vivcw69wRNp8cgfeKVkJIrgJUE_CAT0CUeE/edit?usp=sharing
