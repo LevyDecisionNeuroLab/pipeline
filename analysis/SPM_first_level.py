@@ -37,7 +37,7 @@ fsl.FSLCommand.set_default_output_type('NIFTI_GZ')
 #%%
 # Adjust locations
 data_dir =   '/gpfs/gibbs/pi/levy_ifat/Nachshon/CB1/'
-output_dir =  data_dir + 'results/' 
+output_dir =  data_dir + 'results_temp/' 
 work_dir = '/home/nk549/scratch60/work'
 
 # subject list
@@ -46,18 +46,22 @@ subject_list = ['14032', '1547', '1554', '1571', '1575', '1586', '1593', '1599',
                 '1609', '1623', '1631', '1643', '1649', '1652', '1653', '1656', '1666', '1695', 
                 '1707', '1708', '1710', '17122', '1713', '1714'] # Map field names to individual subject runs. 
 
+subject_list = ['14032']
 
-templates = {'func':       data_dir + 'BIDS/derivatives/sub-{subject_id}/ses-1/func/sub-{subject_id}_ses-1_task-task1_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold.nii.gz',
-             'mask':       data_dir + 'BIDS/derivatives/sub-{subject_id}/ses-1/func/sub-{subject_id}_ses-1_task-task1_space-MNI152NLin2009cAsym_res-2_desc-brain_mask.nii.gz',
-             'regressors': data_dir + 'BIDS/derivatives/sub-{subject_id}/ses-1/func/sub-{subject_id}_ses-1_task-task1_desc-confounds_timeseries.tsv',
+templates = {'func':       data_dir + 'BIDS/derivatives/sub-{subject_id}/ses-1/func/sub-{subject_id}_ses-1_task-task{task_id}_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold.nii.gz',
+             'mask':       data_dir + 'BIDS/derivatives/sub-{subject_id}/ses-1/func/sub-{subject_id}_ses-1_task-task{task_id}_space-MNI152NLin2009cAsym_res-2_desc-brain_mask.nii.gz',
+             'regressors': data_dir + 'BIDS/derivatives/sub-{subject_id}/ses-1/func/sub-{subject_id}_ses-1_task-task{task_id}_desc-confounds_timeseries.tsv',
              'events':     data_dir + '/eventfiles/cb1Reversal_{subject_id}.csv'}
 # basic experiment properties
+
+task_ids = [1] # a list of task ids
 
 fwhm = 6 # full width at half maximum a.k.a smoothing in mm3
 tr = 1 # Length of TR in seconfs
 removeTR = 4 # how many TRs should be removed from the beginning of the scan
 highpass = 128. # high pass filter should be a float
-n_procs = 4 # number of parallel process
+n_procs = 1 # number of parallel process
+motion_params = 6 # number of motion parameters to include in the GLM should be 0, 6 or 25
 
 ## Building contrasts
 # set contrasts, depend on the condition
@@ -141,10 +145,13 @@ infosource = pe.Node(util.IdentityInterface(fields=['subject_id']),
 infosource.iterables = [('subject_id', subject_list)]
 
 # Flexibly collect data from disk to feed into flows.
+
 selectfiles = pe.Node(nio.SelectFiles(templates,
                       base_directory=data_dir),
                       name="selectfiles")
-        
+
+selectfiles.inputs.task_id = task_ids   
+
 runinfo = Node(util.Function(
     input_names=['in_file', 'events_file', 'regressors_file', 'regressors_names', 'removeTR', 'motion_columns'],
     function=_bids2nipypeinfo, output_names=['info', 'realign_file']),
@@ -155,13 +162,12 @@ runinfo.inputs.regressors_names = ['std_dvars', 'framewise_displacement'] + \
                                   ['a_comp_cor_%02d' % i for i in range(6)]
 runinfo.inputs.removeTR = removeTR                                  
  
-runinfo.inputs.motion_columns   = ['trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z']
-                                  #['trans_x', 'trans_x_derivative1', 'trans_x_derivative1_power2', 'trans_x_power2'] + \
-                                  #['trans_y', 'trans_y_derivative1', 'trans_y_derivative1_power2', 'trans_y_power2'] + \
-                                  #['trans_z', 'trans_z_derivative1', 'trans_z_derivative1_power2', 'trans_z_power2'] + \
-                                  #['rot_x', 'rot_x_derivative1', 'rot_x_derivative1_power2', 'rot_x_power2'] + \
-                                  #['rot_y', 'rot_y_derivative1', 'rot_y_derivative1_power2', 'rot_y_power2'] + \
-                                  #['rot_z', 'rot_z_derivative1', 'rot_z_derivative1_power2', 'rot_z_power2']
+motion = ['trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z'] + \
+         ['trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1'] + \
+         ['trans_x_derivative1_power2', 'trans_y_derivative1_power2', 'trans_z_derivative1_power2', 'rot_x_derivative1_power2', 'rot_y_derivative1_power2', 'rot_z_derivative1_power2'] + \
+         ['trans_x_power2', 'trans_y_power2', 'trans_z_power2', 'rot_x_power2', 'rot_y_power2', 'rot_z_power2']
+
+runinfo.inputs.motion_columns   = motion[:motion_params]
     
 extract = Node(fsl.ExtractROI(), name="extract")
 extract.inputs.t_min = removeTR
