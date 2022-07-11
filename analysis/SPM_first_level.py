@@ -3,9 +3,9 @@
 """
 Created on Fri Mar 11 09:52:15 2022
 
-Level 1 analysis for multi run experiment with uneven diusterbution of trials between the runs.
+Basic first level analysis GLM using SPM
 
-@author: nachshon
+@author: Nachshon Korem PhD
 """
 
 #%%
@@ -35,33 +35,40 @@ MatlabCommand.set_default_paths('/gpfs/gibbs/pi/levy_ifat/shared/MATLAB/spm12/')
 fsl.FSLCommand.set_default_output_type('NIFTI_GZ')
 
 #%%
+
+##########################
+### Start editing here ###
+##########################
+
 # Adjust locations
 data_dir =   '/gpfs/gibbs/pi/levy_ifat/Nachshon/CB1/'
-output_dir =  data_dir + 'results_temp/' 
+output_dir =  data_dir + 'results/' 
 work_dir = '/home/nk549/scratch60/work'
 
 # subject list
-
 subject_list = ['14032', '1547', '1554', '1571', '1575', '1586', '1593', '1599', 
                 '1609', '1623', '1631', '1643', '1649', '1652', '1653', '1656', '1666', '1695', 
                 '1707', '1708', '1710', '17122', '1713', '1714'] # Map field names to individual subject runs. 
-
-subject_list = ['14032']
 
 templates = {'func':       data_dir + 'BIDS/derivatives/sub-{subject_id}/ses-1/func/sub-{subject_id}_ses-1_task-task{task_id}_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold.nii.gz',
              'mask':       data_dir + 'BIDS/derivatives/sub-{subject_id}/ses-1/func/sub-{subject_id}_ses-1_task-task{task_id}_space-MNI152NLin2009cAsym_res-2_desc-brain_mask.nii.gz',
              'regressors': data_dir + 'BIDS/derivatives/sub-{subject_id}/ses-1/func/sub-{subject_id}_ses-1_task-task{task_id}_desc-confounds_timeseries.tsv',
              'events':     data_dir + '/eventfiles/cb1Reversal_{subject_id}.csv'}
-# basic experiment properties
 
 task_ids = [1] # a list of task ids
 
+
+# basic experiment properties
 fwhm = 6 # full width at half maximum a.k.a smoothing in mm3
 tr = 1 # Length of TR in seconfs
 removeTR = 4 # how many TRs should be removed from the beginning of the scan
 highpass = 128. # high pass filter should be a float
-n_procs = 1 # number of parallel process
 motion_params = 6 # number of motion parameters to include in the GLM should be 0, 6 or 25
+fd = 1 # Do you want to enter FD to the GLM? 1 yes 0 no 
+dvars = 1 # Do you want std_dvars in the model? 1 yes 0 no 
+n_comp_corr = 6 # how many comp corr do you want in your model? valid values are 0 and 6
+n_procs = 1 # number of parallel process
+
 
 ## Building contrasts
 # set contrasts, depend on the condition
@@ -85,6 +92,10 @@ cont13 = ('stim', 'T', cond_names, [1, 1, 1, 1, 1, 1])
 
 contrasts = [cont1, cont2, cont3, cont4, cont5, cont6, cont7, 
 cont8, cont9, cont10, cont11, cont12, cont13]
+
+#############################################
+### Edit below this line at your own risk ###
+#############################################
 
 #%% regressors for design matrix
 
@@ -157,9 +168,14 @@ runinfo = Node(util.Function(
     function=_bids2nipypeinfo, output_names=['info', 'realign_file']),
     name='runinfo')
 
-        
-runinfo.inputs.regressors_names = ['std_dvars', 'framewise_displacement'] + \
-                                  ['a_comp_cor_%02d' % i for i in range(6)]
+      
+regressors = ['std_dvars'*dvars, 'framewise_displacement'*fd] + ['a_comp_cor_%02d' % i for i in range(n_comp_corr)]
+
+while('' in regressors) :
+    regressors.remove('')
+
+runinfo.inputs.regressors_names = regressors
+
 runinfo.inputs.removeTR = removeTR                                  
  
 motion = ['trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z'] + \
