@@ -41,8 +41,8 @@ fsl.FSLCommand.set_default_output_type('NIFTI')
 # Adjust locations
 
 data_dir =   '/gpfs/gibbs/pi/levy_ifat/Or/alexData/'
-output_dir =  data_dir + '_results/' 
-work_dir = '/home/oad4/scratch60/'
+output_dir =  data_dir + '_results2/' 
+work_dir = '/home/oad4/scratch60/work'
 
 # subject list
 
@@ -66,7 +66,7 @@ motion_params = 6 # number of motion parameters to include in the GLM should be 
 fd = 1 # Do you want to enter FD to the GLM? 1 yes 0 no 
 dvars = 1 # Do you want std_dvars in the model? 1 yes 0 no 
 n_comp_corr = 6 # how many comp corr do you want in your model? valid values are 0 and 6
-n_procs = 1 # number of parallel process
+n_procs = 2 # number of parallel process
 
 
 
@@ -249,5 +249,5 @@ wfSPM.connect([
         ])
 
 #%% Run workflow
-#wfSPM.run('MultiProc', plugin_args={'n_procs': n_procs})   
-wfSPM.run('Linear', plugin_args={'n_procs': 1})
+wfSPM.run('MultiProc', plugin_args={'n_procs': n_procs})   
+#wfSPM.run('Linear', plugin_args={'n_procs': 1})
