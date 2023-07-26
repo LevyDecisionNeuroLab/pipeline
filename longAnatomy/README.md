@@ -16,7 +16,7 @@
             1. You can do that from the terminal using the following commands:</br>
             2. cd to the output directory of the reconAll.py code</br>
             3. In the terminal write:</br>
-            4. $ find . -maxdepth 1 -type d -exec mv {} {}_ses-1 \;</br>
+            4. $ find . -maxdepth 1 -type d ! -name '.' | while read -r subdir; do   new_name="${subdir}_ses-2";   mv "$subdir" "$new_name"; done
             5. Change to ses-2 and repeat
     3. move all anatomical folders to the same folder</br></br>
 
