@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-CreateBIDS:
-A short script that will convert to NIFTI.GZ (from raw DICOM data) and then create a BIDS compatible structure.
+Created on Fri Feb 15 15:02:13 2019
 
-The Brain Imaging Data Structure (BIDS) is a standard for organizing, annotating, and describing data collected 
-during neuroimaging experiments. It is based on a formalized file and directory structure and metadata files 
-with controlled vocabulary.
+@author: Or Duek
+A short script that will convert to NIFTI.GZ (from raw DICOM data) and then create a BIDS compatible structure
 """
 
 # convert to NIFTI
