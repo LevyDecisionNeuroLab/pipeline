@@ -50,3 +50,12 @@ In the folder fmriPrep you'll find three files.
 1. licenseFreeSurfer.txt -- this is the freesurfer license file (should be transfered to your local HPC folder). 
 2. FmriPrep_singularity.sh -- this file will be used to run N subjects in the HPC (please go through the comments and adjust the script accodingly
 3. fmriprep_onesub_onLocal.txt -- an example how to run fmriprep using docker (on the Linux computer in the lab)
+
+## To create a new fMRIPrep
+1. log to HPC terminal
+2. ask for resources (salloc)
+3. Navigate to /gpfs/gibbs/pi/levy_ifat/shared/
+4. run $: singularity build fmriprep-25.1.4.simg \
+          docker://nipreps/fmriprep:25.1.4
+* change fmriprep: to the latest version
+
